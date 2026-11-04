@@ -1,45 +1,79 @@
-# Writer's Help
 
-Building AI course project
+# Writer's Help: Smart Keyword & Context Suggester
+
+An AI-assisted topic and vocabulary suggestion tool designed to help non-professional writers discover domain-specific terminology and meaningful ideas for targeted writing tasks.
+
+> **Course:** Building AI ([Elements of AI](https://www.elementsofai.com/))
+> **Topic:** Natural Language Processing (NLP), Text Analysis, Keyword Co-occurrence
+
+---
 
 ## Summary
 
-An accidental writer needs often help to create a meaningful text. AI could offer a relevant proposal for the substance, in the form of word-groups, which other writers have favored in similar situations.
+Accidental writers—such as employees drafting occasional reports, guides, or blog posts—often struggle to structure their thoughts and select appropriate terminology. **Writer's Help** analyzes domain-specific text corpora to propose relevant clusters of words, helping writers uncover contextual themes and common vocabulary used by experienced authors in similar domains.
+
+---
 
 ## Background
 
-Nowadays people have to be an ability to write presentations, blogs, temporary instruction guides, and so on, but occasionally. We are not professional writers. Anyhow, to give some value to the readers, it would be nice if our texts incorporated relevant thoughts about the subject. Meaningful thoughts became with right words. Of course, it is possible to go through with earlier-written text masses oneself, make notes, and so on. However, this good old way is time-consuming and burdensome. It would be very nice to get some help at this point.
+In modern workplaces, professionals across various roles are frequently required to write presentations, temporary instruction guides, internal documentation, and public blog posts. Most people are not professional writers, yet their text needs to deliver clear value to readers.
 
-## How is it used?
+* **Problem:** Identifying the right concepts and domain terminology usually requires manually reading through extensive reference documents—a time-consuming and tedious process.
+* **Impact:** Writers spend excessive time staring at blank pages or risk producing vague, unstructured documentation.
+* **Goal:** Automate reference analysis to present writers with immediate, relevant word groups and topic suggestions tailored to their target genre or topic.
 
-When a user needs to write a job-oriented text, she or he can pick the text-type, and give a title, some key words, or both. Then the solution will offer some groups of words, which it presumes to find in that kind of text. In the ideal case, selected suggestions are picking up valid topics, and furthermore common terms to describe these clearly.
+---
 
-## Data sources and AI methods
+## How It Is Used
 
-The solution will do clearly the text analysis. For that, it will need data corpora. One is a general text corpus of the used language, with the occurrence information of words. Hopefully this would be available from some source, either free or for money. The other is the corpus of the specific text type, the one where to a user want to add her or his contribution. If many kinds of text types is to be supported, each one needs its own corpus, or the corpus has to be classified for that. Anyhow, this is a corpus (or corpora), which you need to collect yourself. Better suitability means better accuracy.
+The workflow is lightweight and integrated directly into the drafting process:
 
-First task is some sort of lemmatization of your own corpus. The trial and error will tell what the most promising level to do that is.
+1. **Input Setup:** The user selects a target text type (e.g., *Technical Documentation*, *Job Presentation*, *Internal Guide*) and inputs a tentative title, primary keywords, or both.
+2. **Contextual Retrieval:** The system retrieves topic-adjacent word groups frequently present in high-quality reference texts of that category.
+3. **Drafting Support:** The writer uses these vocabulary suggestions as conceptual prompts to structure paragraphs and adopt industry-standard phrasing.
 
-Next, the solution should find the popular words of your corpus that are not so widespread universally by comparison with a more general text corpus. This is for to cast out pronouns and the most common verbs etc. The method for that is still in search.
+---
 
-It is enough to do two first steps once. It creates the basic for the actual analysis. Of course, they can and should be repeated, if there is a place for a bettering.
+## Data Sources & AI Methods
 
-Now it is a time to use key words of the current text to be written. With them, the solution is to find which words in your corpus are close ones. Quite literally, it will pick up texts including given key words, and try to find out typical words just for them. The phase is very similar to the one that earlier hunted meaningful terms of your whole corpus. Therefore, same type a method is a candidate also for that.
+### Data Corpora
 
-Results will be given as lists of words. Each one of key words are united with the own list of proposed relative terms.
+* **General Text Corpus:** A broad language dataset (e.g., Wikipedia dump or open language model corpus) containing word frequency distributions across standard language.
+* **Domain-Specific Corpora:** Specialized text collections categorized by format or topic (e.g., technical guides, product launch presentations), collected to establish baseline vocabulary for specific writing tasks.
 
-## Challenges
+### Technical Pipeline
 
-The goodness of result is very dependent from data. If used corpus is a collection of garbage as a form of texts, the solution will recommend waste.
+```
+[ Domain Corpus ] ---> [ Lemmatization ] ---> [ TF-IDF / Frequency Scoring ]
+                                                       |
+[ User Keywords ] -----------------------------> [ Co-occurrence Search ]
+                                                       |
+                                               [ Output: Word Groups ]
 
-Weak points of the solution might be hard to fathom, if it does give something that may be reasonable. Evaluation and evolution is a challenge, because hoped results have been defined so softly.
+```
 
-Anyhow, the main job is still for a human to do. She or he is to write. AI won't do it awhile.
+1. **Preprocessing & Lemmatization:** Standardize input texts to base forms (lemmas) to group morphological variants.
+2. **Specific vs. General Term Extraction:** Apply frequency filtering (such as **TF-IDF** or **log-likelihood ratio**) against the general corpus to eliminate stop words, pronouns, and ubiquitous verbs while isolating domain-specific terms.
+3. **Contextual Co-occurrence Analysis:** When the user enters a keyword, the model identifies terms within the specialized corpus that statistically co-occur in the same document segments or sentences, returning structured candidate word clusters.
 
-## What next?
+---
 
-There are many blank spots in the project. It requires a closer look to the techniques that someone has already invented, and specific methods to use. The check for the approach to the issue would be good. Is the idea how sound after all? Collecting answers to these questions will help the general understanding of the problem, and probably cause minor and major modifications.
+## Challenges & Limitations
+
+* **Data Quality Dependency ("Garbage In, Garbage Out"):** Proposing useful vocabulary requires high-quality, cleanly curated domain corpora.
+* **Evaluation Metrics:** Because quality is subjective, evaluating performance relies on soft human feedback and user acceptance rather than hard loss metrics.
+* **Human-in-the-Loop:** The tool serves as an ideation assistant rather than an autonomous generator; the actual drafting remains entirely with the human writer.
+
+---
+
+## Future Roadmap
+
+* [ ] Survey open-source NLP libraries (e.g., `spaCy`, `NLTK`, `scikit-learn`) for efficient lemmatization and TF-IDF implementation.
+* [ ] Prototype a lightweight vector similarity search (e.g., Word2Vec or mini embeddings) to complement statistical co-occurrence.
+* [ ] Develop a minimal web UI or browser extension for real-time word prompting.
+
+---
 
 ## Acknowledgments
 
-The [Elements of AI](https://www.elementsofai.com/) Team for giving a push to think about the subject.
+* **Elements of AI / Building AI Team** for structured guidance on project scoping and practical AI applications.
